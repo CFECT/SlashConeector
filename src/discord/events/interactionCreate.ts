@@ -1,12 +1,10 @@
 import type { Client, Interaction } from "discord.js";
 import CommandRegistry from "../registry/CommandRegistry";
-import ButtonRegistry from "../registry/ButtonRegistry";
 import StringSelectMenuRegistry from "../registry/StringSelectMenuRegistry";
 import ModalRegistry from "../registry/ModalRegistry";
 
 export function run(_: Client, interaction: Interaction) {
     if (interaction.isChatInputCommand()) runCommand(_, interaction);
-    else if (interaction.isButton()) runButton(_, interaction);
     else if (interaction.isStringSelectMenu()) runStringSelectMenu(_, interaction);
     else if (interaction.isModalSubmit()) runModalSubmit(_, interaction);
 }
@@ -30,28 +28,6 @@ function runCommand(_: Client, interaction: Interaction) {
     } catch (error) {
         console.error(error);
         interaction.reply({ content: "There was an error while executing this command!", ephemeral: true });
-    }
-}
-
-function runButton(_: Client, interaction: Interaction) {
-    // If the interaction is not a button, return
-    if (!interaction.isButton()) return;
-
-    // Get the button from the collection
-    const button = ButtonRegistry.getButton(interaction.customId);
-
-    // If the button does not exist, return
-    if (!button) {
-        interaction.reply({ content: "Button not found.", ephemeral: true });
-        return;
-    }
-
-    // Try to run the button
-    try {
-        button.execute(interaction);
-    } catch (error) {
-        console.error(error);
-        interaction.reply({ content: "There was an error while executing this button!", ephemeral: true });
     }
 }
 

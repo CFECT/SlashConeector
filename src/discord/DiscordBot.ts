@@ -1,7 +1,6 @@
 import { readdirSync } from "fs";
 import { Client, IntentsBitField, Partials } from 'discord.js';
 import CommandRegistry from "./registry/CommandRegistry";
-import ButtonRegistry from "./registry/ButtonRegistry";
 import StringSelectMenuRegistry from "./registry/StringSelectMenuRegistry";
 import ModalRegistry from "./registry/ModalRegistry";
 
@@ -28,7 +27,6 @@ class DiscordBot {
     public async start(token: string): Promise<void> {
         this.registerEvents();
         CommandRegistry.registerCommands();
-        ButtonRegistry.registerButtons();
         StringSelectMenuRegistry.registerStringSelectMenus();
         ModalRegistry.registerModals();
         await this.client.login(token);
